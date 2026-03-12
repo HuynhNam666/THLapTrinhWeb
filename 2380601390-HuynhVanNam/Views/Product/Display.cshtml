@@ -1,0 +1,41 @@
+﻿@model _2380601390_HuynhVanNam.Models.Product
+
+<h2 class="text-center mb-4 fw-bold">Chi Tiết Sản Phẩm</h2>
+
+<div class="card shadow p-4">
+
+    <div class="row align-items-center">
+
+        <div class="col-md-5 text-center">
+
+            <img src="@Model.ImageUrl"
+                 class="img-fluid rounded product-detail-img" />
+
+        </div>
+
+        <div class="col-md-7">
+
+            <h3 class="fw-bold">@Model.Name</h3>
+
+            <p class="text-danger fs-3 fw-bold">
+                @Model.Price.ToString("N0") VNĐ
+            </p>
+
+            <p class="text-muted">
+                @Model.Description
+            </p>
+
+            <p>
+                <b>Loại:</b> @Model.Category?.Name
+            </p>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Quay lại
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
