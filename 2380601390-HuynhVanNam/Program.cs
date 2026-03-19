@@ -1,21 +1,29 @@
-using _2380601390_HuynhVanNam.Repositories;
+﻿using _2380601390_HuynhVanNam.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cấu hình Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Add services to the container.
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// CẤU HÌNH IDENTITY (QUAN TRỌNG)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IProductRepository, EFProductRepository>();
-builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+builder.Services.AddRazorPages(); // Bắt buộc cho Identity
+builder.Services.AddSession();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -24,10 +32,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
+app.UseAuthentication(); // Đăng nhập
+app.UseAuthorization();  // Phân quyền
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages(); // Map các trang Register/Login
+app.UseSession();
 app.Run();

@@ -1,142 +1,95 @@
-﻿using _2380601390_HuynhVanNam.Models;
-using _2380601390_HuynhVanNam.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using _2380601390_HuynhVanNam.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace _2380601390_HuynhVanNam.Controllers
+namespace _2380601390_HuynhVanNam.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ApplicationDbContext _context;
 
-        public ProductController(IProductRepository productRepository,
-            ICategoryRepository categoryRepository)
+        public ProductController(ApplicationDbContext context)
         {
-            _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
+            _context = context;
         }
 
-        // Hiển thị danh sách sản phẩm
-        public async Task<IActionResult> Index()
+        // LIST
+        public IActionResult Index()
         {
-            var products = await _productRepository.GetAllAsync();
+            var products = _context.Products.Include(p => p.Category).ToList();
             return View(products);
         }
 
-        // Form thêm
-        public async Task<IActionResult> Add()
+        // CREATE
+        public IActionResult Create()
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewBag.Categories = _context.Categories.ToList();
             return View();
         }
 
-        // Thêm sản phẩm
         [HttpPost]
-        public async Task<IActionResult> Add(Product product, IFormFile imageFile)
+        public IActionResult Create(Product product, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
-            {
-                if (imageFile != null)
-                {
-                    product.ImageUrl = await SaveImage(imageFile);
-                }
-
-                await _productRepository.AddAsync(product);
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            var categories = await _categoryRepository.GetAllAsync();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-
-            return View(product);
-        }
-
-        // Lưu ảnh
-        private async Task<string> SaveImage(IFormFile image)
-        {
-            var path = Path.Combine("wwwroot/images", image.FileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await image.CopyToAsync(stream);
-            }
-
-            return "/images/" + image.FileName;
-        }
-
-        // Xem chi tiết
-        public async Task<IActionResult> Display(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-
-            if (product == null)
-                return NotFound();
-
-            return View(product);
-        }
-
-        // Form cập nhật
-        public async Task<IActionResult> Update(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-
-            if (product == null)
-                return NotFound();
-
-            var categories = await _categoryRepository.GetAllAsync();
-
-            ViewBag.Categories = new SelectList(categories, "Id", "Name", product.CategoryId);
-
-            return View(product);
-        }
-
-        // Cập nhật
-        [HttpPost]
-        public async Task<IActionResult> Update(int id, Product product, IFormFile imageFile)
-        {
-            if (id != product.Id)
-                return NotFound();
-
-            var existingProduct = await _productRepository.GetByIdAsync(id);
-
-            if (existingProduct == null)
-                return NotFound();
-
             if (imageFile != null)
             {
-                existingProduct.ImageUrl = await SaveImage(imageFile);
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var path = Path.Combine("wwwroot/images", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    imageFile.CopyTo(stream);
+                }
+
+                product.ImageUrl = "/images/" + fileName;
             }
 
-            existingProduct.Name = product.Name;
-            existingProduct.Price = product.Price;
-            existingProduct.Description = product.Description;
-            existingProduct.CategoryId = product.CategoryId;
+            _context.Products.Add(product);
+            _context.SaveChanges();
 
-            await _productRepository.UpdateAsync(existingProduct);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
-        // Xóa
-        public async Task<IActionResult> Delete(int id)
+        // EDIT
+        public IActionResult Edit(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
-
-            if (product == null)
-                return NotFound();
-
+            var product = _context.Products.Find(id);
+            ViewBag.Categories = _context.Categories.ToList();
             return View(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult Edit(Product product, IFormFile imageFile)
         {
-            await _productRepository.DeleteAsync(id);
+            if (imageFile != null)
+            {
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var path = Path.Combine("wwwroot/images", fileName);
 
-            return RedirectToAction(nameof(Index));
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    imageFile.CopyTo(stream);
+                }
+
+                product.ImageUrl = "/images/" + fileName;
+            }
+
+            _context.Products.Update(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        // DELETE
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products.Find(id);
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

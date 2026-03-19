@@ -1,0 +1,17 @@
+﻿@model _2380601390_HuynhVanNam.Models.Product
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <input asp-for="Name" placeholder="Tên" />
+    <input asp-for="Price" placeholder="Giá" />
+
+    <select asp-for="CategoryId">
+        @foreach (var c in ViewBag.Categories)
+        {
+            <option value="@c.Id">@c.Name</option>
+        }
+    </select>
+
+    <input type="file" name="imageFile" />
+
+    <button type="submit">Thêm</button>
+</form>
