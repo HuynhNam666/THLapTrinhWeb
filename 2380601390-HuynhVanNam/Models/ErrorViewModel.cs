@@ -1,4 +1,4 @@
-namespace _2380601390_HuynhVanNam.Models
+﻿namespace _2380601390_HuynhVanNam.Models
 {
     public class ErrorViewModel
     {

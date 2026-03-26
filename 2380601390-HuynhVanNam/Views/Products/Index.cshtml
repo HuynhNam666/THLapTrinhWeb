@@ -1,0 +1,114 @@
+﻿@model IEnumerable<_2380601390_HuynhVanNam.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<style>
+    .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 25px;
+    }
+
+    .product-card {
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+    }
+
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    .product-img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+    }
+
+    .product-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .product-price {
+        color: #dc2626;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .product-stock {
+        color: #0f766e;
+        font-weight: 600;
+    }
+
+    .product-footer {
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .badge-category {
+        background: #e0f2fe;
+        color: #0369a1;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+</style>
+
+<h2 class="section-title">
+    <i class="fa-solid fa-shop me-2 text-primary"></i>Danh sách sản phẩm
+</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card product-card">
+                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/600x400" : item.ImageUrl)"
+                     class="product-img"
+                     alt="@item.Name" />
+
+                <div class="card-body p-4">
+                    <h5 class="product-name">@item.Name</h5>
+                    <p class="text-muted mb-2">@item.Description</p>
+
+                    <p class="mb-2">
+                        <span class="badge-category">
+                            <i class="fa-solid fa-tag me-1"></i>@item.Category?.Name
+                        </span>
+                    </p>
+
+                    <p class="product-price mb-3">
+                        <i class="fa-solid fa-money-bill-wave me-1"></i>@item.Price.ToString("N0") VNĐ
+                    </p>
+
+                    <p class="product-stock mb-0">
+                        <i class="fa-solid fa-warehouse me-1"></i>Tồn kho: @item.Stock
+                    </p>
+                </div>
+
+                <div class="card-footer product-footer p-3">
+                    <div class="d-flex gap-2">
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id"
+                           class="btn btn-info text-white flex-fill">
+                            <i class="fa-solid fa-eye me-1"></i>Chi tiết
+                        </a>
+
+                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id"
+                           class="btn btn-primary flex-fill">
+                            <i class="fa-solid fa-cart-plus me-1"></i>Thêm giỏ hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

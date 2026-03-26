@@ -1,0 +1,220 @@
+﻿body {
+    background: linear-gradient(135deg, #f4f7fb, #eef2f7);
+    color: #1f2937;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.navbar {
+    background: linear-gradient(90deg, #0f172a, #1e293b) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 12px 0;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #fff !important;
+}
+
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.92) !important;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+    .navbar .nav-link:hover {
+        color: #93c5fd !important;
+    }
+
+.auth-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 1100px;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}
+
+.auth-row {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 640px;
+}
+
+.auth-left {
+    flex: 1 1 55%;
+    padding: 48px;
+    background: #fff;
+}
+
+.auth-right {
+    flex: 1 1 45%;
+    padding: 48px;
+    background: linear-gradient(180deg, #eff6ff, #f8fbff);
+    border-left: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+}
+
+.auth-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.auth-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    color: #64748b;
+    margin-bottom: 28px;
+    font-size: 1rem;
+}
+
+.auth-box h3 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 14px;
+}
+
+.auth-box p {
+    color: #64748b;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.feature-list {
+    padding-left: 18px;
+    margin: 0;
+    color: #475569;
+}
+
+    .feature-list li {
+        margin-bottom: 10px;
+    }
+
+.form-floating,
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-control {
+    min-height: 54px;
+    border-radius: 14px;
+    border: 1px solid #dbe3ee;
+    background: #f8fafc;
+    box-shadow: none !important;
+    padding-left: 14px;
+    padding-right: 14px;
+    transition: all 0.25s ease;
+}
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12) !important;
+    }
+
+.form-check-input {
+    border-radius: 6px;
+}
+
+.form-check-label {
+    color: #475569;
+}
+
+.btn-auth {
+    width: 100%;
+    min-height: 52px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+    transition: all 0.25s ease;
+}
+
+    .btn-auth:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.28);
+        color: #fff;
+    }
+
+.auth-links a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+.external-box {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid #dbeafe;
+    border-radius: 20px;
+    padding: 28px;
+}
+
+    .external-box .icon-wrap {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: #dbeafe;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+.text-danger ul {
+    padding-left: 18px;
+    margin-bottom: 18px;
+}
+
+footer {
+    color: #64748b;
+}
+
+@media (max-width: 991.98px) {
+    .auth-left,
+    .auth-right {
+        flex: 1 1 100%;
+        padding: 32px 24px;
+    }
+
+    .auth-right {
+        border-left: none;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .auth-title {
+        font-size: 2rem;
+    }
+}

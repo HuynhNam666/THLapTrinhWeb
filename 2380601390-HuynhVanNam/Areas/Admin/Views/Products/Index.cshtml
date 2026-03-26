@@ -1,0 +1,43 @@
+﻿@model IEnumerable<_2380601390_HuynhVanNam.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<h2>Quản lý sản phẩm</h2>
+
+<p>
+    <a asp-area="Admin" asp-controller="Products" asp-action="Create" class="btn btn-primary">
+        Thêm sản phẩm
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Danh mục</th>
+            <th>Giá</th>
+            <th>Tồn kho</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Category?.Name</td>
+            <td>@item.Price.ToString("N0")</td>
+            <td>@item.Stock</td>
+            <td>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Sửa</a>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

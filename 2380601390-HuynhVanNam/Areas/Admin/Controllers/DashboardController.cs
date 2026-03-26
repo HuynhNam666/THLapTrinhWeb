@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using _2380601390_HuynhVanNam.Data;
 using Microsoft.AspNetCore.Authorization;
-using _2380601390_HuynhVanNam.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace _2380601390_HuynhVanNam.Areas.Admin.Controllers
 {
@@ -8,17 +9,18 @@ namespace _2380601390_HuynhVanNam.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public DashboardController(ApplicationDbContext context)
+        public DashboardController(AppDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.ProductCount = _context.Products.Count();
-            ViewBag.OrderCount = _context.Orders.Count();
+            ViewBag.TotalProducts = await _context.Products.CountAsync();
+            ViewBag.TotalOrders = await _context.Orders.CountAsync();
+            ViewBag.TotalRevenue = await _context.Orders.SumAsync(x => (decimal?)x.TotalAmount) ?? 0;
 
             return View();
         }

@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<div class="alert alert-success">
+    <h3>Đặt hàng thành công</h3>
+    <p>Mã đơn hàng của bạn là: <strong>#@ViewBag.OrderId</strong></p>
+</div>
+
+<a asp-controller="Products" asp-action="Index" class="btn btn-primary">Tiếp tục mua hàng</a>
+<a asp-controller="Orders" asp-action="MyOrders" class="btn btn-secondary">Xem đơn hàng của tôi</a>
